@@ -1,0 +1,183 @@
+This is a "plugin" for the Video Disk Recorder (VDR).
+
+Written by:                  Jan Rieger <vdr@ricomp.de> (up to 0.0.2a)
+                             Urig @ vdr-portal          (0.0.2a-kw3 - fork from 0.0.2a)
+                             Winfried Koehler <nvdec A.T. quantentunnel D.O.T. de > (2021.03.04-wirbel - once again forked from 0.0.2a-kw3)
+
+Project's homepage:          https://github.com/wirbel-at-vdr-portal/vdr-plugin-control
+
+Latest version available at: https://github.com/wirbel-at-vdr-portal/vdr-plugin-control
+
+License:                     GPL v2
+
+See the file COPYING for license information.
+
+
+
+
+
+
+
+Description - 2021.03.04-wirbel
+--------------------------------------------------------------------------------
+Well - the original authors Webspace is gone; Urig's Version is outdated years
+ago as well. And i still like the simplicity of usage to control VDR via this
+Plugin.
+
+Therefore, i put my long-years slightly updated version to github, may others
+use it - or not.
+
+It works flawless on VDR-2.4.6 and VDR-2.5.1, compiles fine with gcc-10.2.0
+and no reason to abandom this great Plugin. Default telnet Port is 2002, so
+start this plugin and use telnet <VDR-IP> 2002. Telnet Session is stopped by
+<CTRL> + C - i think this changed over the years.
+
+For historic reasons, the following is the original README below.
+
+I actually dont know what was changed over all those years, i refurbished
+the Makefile, added a build shell script and so on.
+
+-- wirbel.
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+The 'control' plugin brings the ability to VDR to control
+the hole OSD over a telnet client.
+
+To reach this, 'control' listens on a network socket
+(default is port 2002). If a client wants to connect, VDR
+checks if that client is allowed to connect to VDR (see in
+the documentation of VDR about the svdrphosts.conf file for
+more info). If the connection is etablished, 'control'
+sends the curent OSD state to the client. Also all key
+stroks at the client side are redirected to VDR.
+
+
+Installation
+------------
+
+Decompress the current version of the 'control' plugin to the
+directory in wich your VDR plugins are installed (e.g.
+/usr/local/src/VDR/PLUGINS/src):
+
+cd /usr/local/src/VDR/PLUGINS/src
+tar -xzvf vdr-control-x.x.x.tgz
+ln -s control-x.x.x control
+
+
+Then go back to the VDR directory and build your plugins:
+
+cd ../../..
+make plugins
+
+
+Now you can use the plugin
+
+./vdr -Pcontrol
+
+Or, if you want to use an other network port (e.g. port 2005):
+
+./vdr -P"control -p 2005"
+
+
+
+/*******************************************************************************
+ * README 0.0.2a-kw3:
+ ******************************************************************************/
+
+Download: https://www.u32.de/download/vdr-control-0.0.2a-kw3.tar.gz
+
+Sorry, there is no english text here
+-------------------------------------
+
+
+Control-Plugin für vdr 1.4.7 und 1.6.0 
+======================================
+
+Das Control-Plugin (Fernsteuerung des vdr per Telnet) hatte bis zu Version 0.0.2a ein paar blöde Bugs: 
+
+* Bei Beendigung einer Telnetsitzung durch Strg-C stürzte vdr nach dem nächsten Tastedruck, 
+  ansonsten nach drei Minuten ab 
+* Verwendete man Strg-Z zum Schließen, schoss man den Telnetclient ab oder schloss 
+  man z.B. Putty unter Windows mit Alt-F4 oder dem Fensterschliessbutton, 
+  so kam es auf einmal auf dem vdr zu einer CPU-Belastung nahe 100% 
+  (immerhin stürzte vdr dabei nicht ab). 
+* Das Plugin liess sich unter vdr 1.4.7 und vdr 1.6.0 nicht nicht compilieren 
+
+Ich glaube nun (auch unter Verwendung eines Patches von urig @ vdr-portal, s.u.) alle diese 
+Bugs beseitigt zu haben.
+Die Originalversion 0.0.2a (ohne meine Fixes) gibt es unter http://ricomp.de/vdr/down_en.html
+
+
+--------------------------------------------
+control-0.0.2a-terminatefix.diff ist ein Patch von 
+Urig @ vdr-portal vom  12.06.2006 (per Board-Mail erhalten): 
+
+"Der Patch behebt die 3-Minuten-Verzögerung beim Trennen 
+einer Verbindung, weil der Thread auf seine eigene Beendigung wartet."
+
+s.a.  http://www.linuxtv.org/pipermail/vdr/2006-May/009531.html
+
+
+
+
+
+
+
+
+
+
+
+
+/*******************************************************************************
+ * README 0.0.3ng-wirbel
+ ******************************************************************************/
+
+0.0.3ng-wirbel is a heavily restructed fork of patched version 0.0.2a-kw3, see
+notes above. As original source is GPLv2 and original version seems to be
+abandomed since >10years now, this version is available as i still use this
+tiny plugin..
+
+License as original authors choice: GPLv2.
+
+
+
+Some changes are visible in usage:
+ - telnet connection is now IPv6 with IPv4 backward compat.
+ - telnet connection is now closed by <CTRL + c> shortcut
+ - works with vdr-2.3.1 (no other vdr versions are tested, neither backwards
+   nor forwards.)
+ - no more segfaults on VDR exit, at least i didnt see while extensive testing.
+ - clears now window completely before exiting.
+ - telnet session should be run on UTF-8 translation now, dont use 8859* pls.
+ - new style Makefile (i hate that screwed up VDR Makefile stuff, i doesnt work
+   any longer correctly if you doesnt install vdr completely, but anyhow...)
+ - uses vector, string and algorithm headers now, to remove classes that
+   do more or less the same as std classes, uses also VDRs cTextWrapper instead
+   of own implementation.
+
+
+Internally nearly everything has been reorganized, so i guess a diff against
+older versions doesnt give any useful result. Some files are removed, others
+are put together to reduce dependencies between classes and remove unused code.
+Several classes are renamed to understand their usage, other removed and
+so on. Debugging has been changed. Also, instead of moving socket data between
+three classes, a ringbuffer is implemented and those three classes are now
+one class avoiding this overhead. 
+
+
+However, the look and feel of the previous versions is preserved.
+
+--wirbel
