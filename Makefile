@@ -117,9 +117,6 @@ install-i18n: $(I18Nmsgs)
 #*******************************************************************************
 $(SOFILE): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) -o $@
-ifdef LCLBLD
-	install -D $(SOFILE) $(LIBDIR)/$(SOFILE).$(APIVERSION)
-endif
 
 
 install-lib: $(SOFILE)
