@@ -15,3 +15,11 @@ and under GPLv2. Decided to make this fork available via github..
 - check compile on GCC-10.2.0 and silence warnings in telnet.c
 - Makefile delete *.so-$(APIVERSION) - if build with the shell script.
 - Upload to github
+
+
+20210414:
+- merged 'Uncomment the ifdef clause' by seahawk1986, fixing Makefile.
+- update HISTORY to reflect seahawks change
+- prepare for a released Version:
+  - change Version to 1.0.0 - i don't expect major changes in future.
+

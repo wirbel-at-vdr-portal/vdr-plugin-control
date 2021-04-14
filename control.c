@@ -15,7 +15,7 @@
 /*******************************************************************************
  * cPluginControl
  ******************************************************************************/
-static const char *VERSION        = "2021.03.04-wirbel";
+static const char *VERSION        = "1.0.0";
 static const char *DESCRIPTION    = "telnet remote control";
 static const char *MAINMENUENTRY  = NULL;
 
