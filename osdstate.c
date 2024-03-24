@@ -410,8 +410,14 @@ void cOsdState::OsdItem(const char* Text, int Index) {
 
   if (Index < mMenu.Count())
      mMenu.Update(Index, Text);
-  else
+  else if (Index == mMenu.Count())
      mMenu.Add(txt.c_str());
+  else {
+     // insert empty lines and update them later.
+     while(Index > mMenu.Count())
+        mMenu.Add("");
+     mMenu.Add(txt.c_str());
+     }
 
   if (txt.size()) {
      const char* found, *lastFound = txt.c_str();
