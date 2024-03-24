@@ -13,7 +13,8 @@
 cStrList::cStrList() {};
 
 void cStrList::Add(const char* s) {
-  v.push_back(std::string(s));
+  if (s)
+     v.push_back(std::string(s));
 }
 
 void cStrList::Clear() {
@@ -25,6 +26,8 @@ int cStrList::Count() {
 }
 
 int cStrList::Find(const char* s) {
+  if (!s or !*s)
+     return -1;
   auto it = std::find(v.begin(), v.end(), std::string(s));
   if (it == v.end())
      return -1;
@@ -32,11 +35,13 @@ int cStrList::Find(const char* s) {
 }
 
 const char* cStrList::operator[](int Index) {
+  if (Index < 0 or Index >= (int) v.size())
+     return nullptr;
   return v[Index].c_str();
 }
 
 void cStrList::Update(unsigned Index, const char* s) {
-  if (Index < v.size()) v[Index] = s;
+  if (Index < v.size() and s) v[Index] = s;
 }
 
 
