@@ -211,6 +211,16 @@ void cOsdState::Replaying(const cControl* Control, const char* Name, const char*
 }
 
 /*------------------------------------------------------------------------------
+ * If the editing marks of the recording that is currently being played are
+ * modified in any way, this function is called with the list of Marks.
+ * If Marks is NULL, the editing marks for the currently played recording have
+ * been deleted entirely.
+ *-----------------------------------------------------------------------------*/
+void cOsdState::MarksModified(const cMarks* Marks) {
+  debug_plugin("Marks modified");
+}
+
+/*------------------------------------------------------------------------------
  * The volume has been set to the given value, either abs or rel to current volume.
  *-----------------------------------------------------------------------------*/
 void cOsdState::SetVolume(int Volume, bool Absolute) {
@@ -398,7 +408,10 @@ void cOsdState::OsdItem(const char* Text, int Index) {
 
   debug_plugin("single line at index %d: '%s'", Index, txt.c_str());
 
-  mMenu.Add(txt.c_str());
+  if (Index < mMenu.Count())
+     mMenu.Update(Index, Text);
+  else
+     mMenu.Add(txt.c_str());
 
   if (txt.size()) {
      const char* found, *lastFound = txt.c_str();

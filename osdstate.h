@@ -56,6 +56,7 @@ private:
   virtual void ChannelSwitch(const cDevice* Device, int ChannelNumber, bool LiveView);
   virtual void Recording(const cDevice* Device, const char* Name, const char* FileName, bool On);
   virtual void Replaying(const cControl* Control, const char* Name, const char* FileName, bool On);
+  virtual void MarksModified(const cMarks* Marks);
   virtual void SetVolume(int Volume, bool Absolute);
   virtual void SetAudioTrack(int Index, const char* const* Tracks);
   virtual void SetAudioChannel(int AudioChannel);
