@@ -408,8 +408,12 @@ void cOsdState::OsdItem(const char* Text, int Index) {
 
   debug_plugin("single line at index %d: '%s'", Index, txt.c_str());
 
-  if (Index < mMenu.Count())
-     mMenu.Update(Index, Text);
+  if (Index < mMenu.Count()) {
+     if (std::string(mMenu[Index]) != txt) {
+        mMenu.Update(Index, txt.c_str());
+        OsdCurrentItem(txt.c_str());
+        }
+     }
   else if (Index == mMenu.Count())
      mMenu.Add(txt.c_str());
   else {
