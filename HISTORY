@@ -23,3 +23,11 @@ and under GPLv2. Decided to make this fork available via github..
 - prepare for a released Version:
   - change Version to 1.0.0 - i don't expect major changes in future.
 
+
+20240327:
+- create .gitignore
+- improve cStrList
+- cOsdState::OsdItem(): bugfix; should add only, if not alrdy in menu
+- cOsdState::OsdItem(): Text item doesnt need to be ordered
+- cOsdState::OsdItem(): redraw osd only on *changed* OSD items
+- prepare for Version 1.0.1

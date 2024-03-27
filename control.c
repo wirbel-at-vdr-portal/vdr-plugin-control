@@ -15,7 +15,15 @@
 /*******************************************************************************
  * cPluginControl
  ******************************************************************************/
-static const char *VERSION        = "1.0.0";
+
+/*******************************************************************************
+ * reasonable versioning rules:
+ *   - MAJOR++  -> API-incompatible
+ *   - MINOR++  -> API-compatible, but new functionality
+ *   - PATCH++  -> API untouched changes
+ ******************************************************************************/
+
+static const char *VERSION        = "1.0.1";
 static const char *DESCRIPTION    = "telnet remote control";
 static const char *MAINMENUENTRY  = NULL;
 
