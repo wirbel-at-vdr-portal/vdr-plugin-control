@@ -402,9 +402,6 @@ int cCtrlGateway::GetOption(unsigned char Option, int local) {
 
 
 void cCtrlGateway::Action() {
-  /* NOTE: DO NOT DESTROY 'kbd', VDR ITSELF DESTROYS IT.
-   * Otherwise double free on exit of vdr.
-   */
   cCtrlKeyboard* kbd = new cCtrlKeyboard("cCtrlKeyboard");
   cOsdState osdstate(this, "cOsdState");
 
@@ -478,6 +475,11 @@ void cCtrlGateway::Action() {
         } // if (socket_Poll(100))
      } // while mActive
   } while(0);
+
+  /* NOTE: DO NOT DESTROY 'kbd', VDR ITSELF DESTROYS IT.
+   * Otherwise double free on exit of vdr.
+   */
+  Remotes.Del(kbd, true);
 
   debug_plugin("gateway thread ended (pid=%d)", getpid());
 }

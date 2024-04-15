@@ -12,7 +12,7 @@
 /*******************************************************************************
  * cCtrlKeyboard
  ******************************************************************************/
-class cCtrlKeyboard : public cKbdRemote  {
+class cCtrlKeyboard : public cRemote  {
 private:
   std::string mName;
 public:

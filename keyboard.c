@@ -75,7 +75,7 @@ static const tKeymap keymap[] = {
  * cCtrlKeyboard
  ******************************************************************************/
 
-cCtrlKeyboard::cCtrlKeyboard(const char* name) : cKbdRemote() {
+cCtrlKeyboard::cCtrlKeyboard(const char* name) : cRemote("KBD") {
   mName = name;
   debug_plugin("'%s' = %p", mName.c_str(), this);
 }
