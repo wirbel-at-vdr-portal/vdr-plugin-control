@@ -32,6 +32,9 @@ and under GPLv2. Decided to make this fork available via github..
 - cOsdState::OsdItem(): redraw osd only on *changed* OSD items
 - prepare for Version 1.0.1
 
-20240415 (1.0.2):
+20240417 (1.0.2):
 - add fix_cpu_load.patch from '@Zabrimus', see
   https://www.vdr-portal.de/forum/index.php?thread/136173-vdr-plugin-control-1-0-1/&postID=1369291#post1369291
+- Makefile: switch to short compiler messages by default. Old behaviour can be
+  restored by commenting line 27
+- prepare for Version 1.0.2

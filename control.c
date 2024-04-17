@@ -23,7 +23,7 @@
  *   - PATCH++  -> API untouched changes
  ******************************************************************************/
 
-static const char *VERSION        = "1.0.1";
+static const char *VERSION        = "1.0.2";
 static const char *DESCRIPTION    = "telnet remote control";
 static const char *MAINMENUENTRY  = NULL;
 
