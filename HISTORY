@@ -33,6 +33,5 @@ and under GPLv2. Decided to make this fork available via github..
 - prepare for Version 1.0.1
 
 20240415 (1.0.2):
-- add fix_cpu_load.patch form '@Zabrimus', see
-  https://www.vdr-portal.de/forum/index.php?thread/136173-vdr-plugin-control-1-0-1/&postID=1369378#post1369378
-
+- add fix_cpu_load.patch from '@Zabrimus', see
+  https://www.vdr-portal.de/forum/index.php?thread/136173-vdr-plugin-control-1-0-1/&postID=1369291#post1369291
