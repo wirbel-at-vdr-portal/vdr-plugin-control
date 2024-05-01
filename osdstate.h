@@ -7,7 +7,6 @@
 #define _CTRLSTATE_H_
 
 #include <string>
-#include <mutex>
 #include <vdr/status.h>
 #include <vdr/font.h>
 #include "global.h"
