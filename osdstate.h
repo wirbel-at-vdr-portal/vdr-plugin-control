@@ -6,9 +6,10 @@
 #ifndef _CTRLSTATE_H_
 #define _CTRLSTATE_H_
 
+#include <string>
+#include <mutex>
 #include <vdr/status.h>
 #include <vdr/font.h>
-#include <string>
 #include "global.h"
 
 // forward decls.
@@ -50,6 +51,7 @@ private:
 
   int MaxLen(const char* Text, int startPos, int endPos);
   void Send(const char* Msg, ...);
+  void Display(int Row);
 
   virtual void ChannelChange(const cChannel* Channel);
   virtual void TimerChange(const cTimer* Timer, eTimerChange Change);
