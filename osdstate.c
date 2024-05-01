@@ -3,8 +3,9 @@
  * See the README file for copyright information and how to reach the author.
  */
 
-#include <stdarg.h>
-#include <stdio.h>
+#include <chrono>
+#include <cstdarg>
+#include <cstdio>
 #include <vdr/tools.h> // Utf8StrLen()
 #include "global.h"
 #include "telnet.h"
@@ -318,7 +319,6 @@ void cOsdState::OsdTitle(const char* Title) {
      }
 }
 
-
 /*------------------------------------------------------------------------------
  * Message has been displayed in the status line of the menu.
  * If Message is NULL, the status line has been cleared.
@@ -394,6 +394,62 @@ void cOsdState::OsdHelpKeys(const char* Red, const char* Green, const char* Yell
   mBlue   = bl;
 }
 
+/*------------------------------------------------------------------------------
+ * private, update current display.
+ *-----------------------------------------------------------------------------*/
+void cOsdState::Display(int Row) {
+
+  /* Row is a zero-based mMenu vector index.
+   * Do not call this func until 'Row' is up-to-date.
+   */
+  if (Row < 0 or Row >= mMenu.Count()) {
+     debug_plugin("invalid Row %d", Row);
+     return;
+     }
+
+  debug_plugin("%d", Row);
+
+  const char* txt = mMenu[Row];
+  const int height = mHeight - 4;
+  long oldPage = mLastItemPos < 0 ? -1 : mLastItemPos / height;
+  long newPage = Row          < 0 ? -1 : Row          / height;
+
+  if (oldPage != newPage) { // Cursor switched to new page?
+     // Setting tabs
+     Send(EC_CLRTABS); // clear all tabs
+     for(int tabPos=0, i=0; i<MaxTabs && mTabWidths[i]; ++i) {
+        tabPos += mTabWidths[i] + 1;
+        Send(EC_CURPOS EC_TABSET, 1, tabPos);
+        }
+
+     // Display new page
+     long lastEntry = (newPage + 1) * height;
+     if (lastEntry > mMenu.Count())
+        lastEntry = mMenu.Count();
+
+     for(long i = newPage * height; i < lastEntry; ++i) {
+        const char* s = mMenu[i];
+        int maxWidth = MaxLen(s, 1, mWidth);
+        Send(EC_CURPOS EC_CLREOL "%.*s" EC_DEFAULT,
+             (i % height) + 3, 1,
+             maxWidth, s);
+        }
+
+     // clear last lines
+     for(long i = lastEntry % height; i && i < height; ++i)
+        Send(EC_CURPOS EC_CLREOL, i + 3, 1);
+     }
+  else {
+     /* Update current page */
+     int maxWidth = MaxLen(txt, 1, mWidth);
+     Send(EC_CURPOS EC_CLREOL "%.*s" EC_DEFAULT,
+          (Row % height) + 3, 1,
+          maxWidth, txt);
+     }
+
+  mCurrentItem = txt;
+  mLastItemPos = Row;
+}
 
 /*------------------------------------------------------------------------------
  * The OSD displays the given single line Text as menu item at Index.
@@ -406,16 +462,14 @@ void cOsdState::OsdItem(const char* Text, int Index) {
      fix_utf8_str(txt);
      }
 
-  debug_plugin("single line at index %d: '%s'", Index, txt.c_str());
+  debug_plugin("single line at index %d: '%s'\n", Index, txt.c_str());
 
   if (Index < mMenu.Count()) {
      if (std::string(mMenu[Index]) != txt) {
         mMenu.Update(Index, txt.c_str());
-        OsdCurrentItem(txt.c_str());
+        Display(Index);
         }
      }
-  else if (Index == mMenu.Count())
-     mMenu.Add(txt.c_str());
   else {
      // insert empty lines and update them later.
      while(Index > mMenu.Count())
@@ -436,7 +490,6 @@ void cOsdState::OsdItem(const char* Text, int Index) {
   mOsdMode = sDisplayMenu;
 }
 
-
 /*------------------------------------------------------------------------------
  * The OSD displays the given single line Text as the current menu item.
  *-----------------------------------------------------------------------------*/
@@ -450,7 +503,6 @@ void cOsdState::OsdCurrentItem(const char* Text) {
   debug_plugin("%s (current menu item %d)", txt.c_str(), mLastItemPos);
 
   int pos = mMenu.Find(txt.c_str());
-
   // i cannot find this current item. Assume that the item on current pos changed.
   if (pos < 0) {
      if (mLastItemPos >= mMenu.Count())
@@ -458,9 +510,6 @@ void cOsdState::OsdCurrentItem(const char* Text) {
      mMenu.Update(mLastItemPos, txt.c_str());
      pos = mLastItemPos;
      }
-
-//  if ((pos < 0) or (pos == mLastItemPos))
-//     return;
 
   const int height = mHeight - 4;
   long oldPage = mLastItemPos < 0 ? -1 : mLastItemPos / height;
@@ -499,7 +548,7 @@ void cOsdState::OsdCurrentItem(const char* Text) {
      if (mLastItemPos >= 0) {
         const char* text = mMenu[mLastItemPos];
         int maxWidth = MaxLen(text, 1, mWidth);
-        Send(EC_CURPOS EC_CLREOL "%.*s" EC_DEFAULT, // '\033m' here looks like a bug -> 'ESC m' : Memory Unlock (per HP terminals).
+        Send(EC_CURPOS EC_CLREOL "%.*s" EC_DEFAULT,
             (mLastItemPos % height) + 3, 1, maxWidth, text);
         }
      if (pos >= 0) {
