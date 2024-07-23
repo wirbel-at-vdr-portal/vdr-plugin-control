@@ -38,3 +38,7 @@ and under GPLv2. Decided to make this fork available via github..
 - Makefile: switch to short compiler messages by default. Old behaviour can be
   restored by commenting line 27
 - prepare for Version 1.0.2
+
+20240723 (1.0.3):
+- Dynamic osd for vdr-plugin-femon's signal status page.
+
