@@ -20,9 +20,7 @@
 class cTermFont : public cFont {
 public:
   cTermFont() {}
-  #if VDRVERSNUM > 20301
   virtual int Width(void) const { return 1; }
-  #endif
   virtual int Width(uint c) const { return 1; } /* int Width(uint c): the only function in use in this class. */
   virtual int Width(const char *s) const { return Utf8StrLen(s); }
   virtual int Height(void) const { return 1; }

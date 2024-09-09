@@ -42,3 +42,5 @@ and under GPLv2. Decided to make this fork available via github..
 20240723 (1.0.3):
 - Dynamic osd for vdr-plugin-femon's signal status page.
 
+2024xxxx (1.0.4):
+- skip ancient VDR versions
